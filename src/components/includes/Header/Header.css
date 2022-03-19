@@ -1,0 +1,60 @@
+#header{
+    height:100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+#header div.nav-left h1 a img{
+    width:100px;
+}
+#header div.nav-middle{
+
+}
+#header div.nav-middle .btn-outline-success {
+    color: rgb(3 69 171);
+    border-color: rgb(3 69 171);
+    box-shadow: none;
+}
+#header div.nav-middle form{
+    width:400px;
+}
+#header div.nav-middle input{
+    box-shadow: none;
+}
+#header div.nav-middle .btn-outline-success:hover{
+    background-color: #a0ecfe;
+}
+#header div.nav-right{
+    
+}
+#header div.nav-right ul{
+    display: flex;
+    align-items: center;
+}
+#header div.nav-right ul li{
+    margin-right: 30px;
+}
+#header div.nav-right ul li:last-child{
+    margin-right: 0;
+}
+#header div.nav-right ul li a.button{
+    padding:8px 20px;
+    font-size: 16px;
+    font-weight: 500;
+    color: rgb(3 69 171);
+    background-color: #fff; 
+    border-radius: 8px;
+}
+#header div.nav-right ul li div.dropdown .btn-primary {
+    color: #000;
+    background-color: #fff;
+    border:none;
+    outline:none;
+    box-shadow: none;
+}
+#header div.nav-right ul li .MuiSvgIcon-root {
+    fill: rgb(3 69 171);
+}
+#header div.nav-right ul li.logout-btn{
+    cursor:pointer;
+}

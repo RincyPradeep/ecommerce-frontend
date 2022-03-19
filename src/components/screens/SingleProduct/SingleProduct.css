@@ -1,0 +1,72 @@
+#single-product{
+    margin-top: 50px;
+    margin-bottom: 50px;
+    display: flex;
+    justify-content: space-between;
+    min-height: 250px;
+}
+#single-product div.left{
+    width: 40%;
+    max-height: 600px;
+}
+#single-product div.left img{
+    width: 100%;
+    max-height: 100%;
+}
+#single-product div.right{
+    width: 40%;
+}
+#single-product div.right h2{
+    
+}
+#single-product div.right p{
+    margin: 20px 0;
+}
+#single-product div.right div.details{
+    width: 70%;
+}
+#single-product div.right div.details div.details-row{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border:1px solid #7e7e7e;
+    border-bottom: none;
+    padding:10px;
+}
+#single-product div.right div.details div.details-row:last-child{
+    border-bottom: 1px solid #7e7e7e;
+}
+#single-product div.right div.details div.details-row p{
+    margin:0;
+}
+#single-product div.right div.details div.details-row p.green{
+    color:green;
+}
+#single-product div.right div.details div.details-row p.red{
+    color:red;
+}
+#single-product div.right label{
+    margin-right: 10px;
+}
+#single-product div.right select{
+    
+}
+#single-product div.right button{
+    display: block;
+    width: 70%;
+    padding:8px 20px;
+    font-size: 16px;
+    font-weight: 500;
+    color: rgb(3 69 171);
+    background-color: #fff; 
+    border-radius: 8px;
+    border:1px solid rgb(3 69 171);
+    text-align: center;
+    margin-top: 30px;
+}
+#single-product div.right button:hover{
+    transition:  all .6s ease-in;
+    background-color: rgb(3 69 171);
+    color:#fff;
+}

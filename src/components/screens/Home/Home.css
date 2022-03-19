@@ -1,0 +1,40 @@
+#home{
+    padding: 50px 0;
+}
+#home nav.menu{
+    margin-bottom: 50px;
+}
+#home nav.menu ul{
+    display: flex;
+    align-items: center;
+}
+#home nav.menu ul li{
+    margin-right: 20px;
+}
+#home nav.menu ul li a{
+    
+}
+#home nav.menu ul li a.active{
+    border-bottom: 2px solid rgb(3 69 171);
+}
+#home div.products{
+
+}
+#home div.products ul{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+#home div.products ul li{
+    margin-right: 20px;
+    margin-bottom: 50px;
+}
+#home div.products ul li:hover{
+    transform: scale(1.05);
+    box-shadow: 1px 8px 20px grey;
+    transition:  box-shadow .2s ease-in;
+}
+#home div.products ul li:nth-child(4n){
+    margin-right: 0;
+}

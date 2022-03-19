@@ -1,0 +1,14 @@
+#checkout{
+margin-top: 50px;
+margin-bottom: 50px;
+}
+#checkout form{
+    display:flex;
+    justify-content:space-between;
+}
+#checkout form div.left{
+    width:40%;
+}
+#checkout form div.right{
+    width:40%;
+}

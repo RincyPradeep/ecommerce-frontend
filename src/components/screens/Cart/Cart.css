@@ -1,0 +1,115 @@
+#cart{
+    margin-top: 50px;
+    margin-bottom: 50px;
+    min-height: 250px;
+}
+#cart div.head{
+    background-color: #a0ecfe;
+    padding : 10px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+#cart ul.cart-items{
+    
+}
+#cart li.cart-item{
+    display: flex;
+    justify-content: space-between;
+    height:200px;
+    width: 100%;
+    margin-bottom: 30px;
+    padding:20px;
+    padding-right: 50px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    position: relative;
+}
+#cart li.cart-item img{
+    width: 15%;
+    margin-right: 40px;
+    height: 100%;
+}
+#cart li.cart-item h5{
+    width: 50%;
+    margin-right: 40px;
+}
+#cart li.cart-item div.quantity{
+    width: 10%;
+    margin-right: 20px;
+    display: flex;
+    flex-direction: column;
+}
+#cart li.cart-item div.quantity label{
+    
+}
+#cart li.cart-item div.quantity select{
+    
+}
+#cart li.cart-item div.price{
+    width: 10%;
+    display: flex;
+    align-items: right;
+    flex-direction: column;
+    text-align: right;
+}
+#cart li.cart-item div.price p{
+    
+}
+#cart li.cart-item div.close-btn{
+    position: absolute;
+    top:0;
+    right:0;
+    background-color: rgb(3 69 171);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3px;
+    cursor: pointer;
+}
+#cart li.cart-item div.close-btn .MuiSvgIcon-root{
+    fill:#fff;
+    width:20px;
+    height:20px;
+}
+#cart h4{
+    text-align: right;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e7e7e7;
+}
+#cart div.buttons{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+}
+#cart div.buttons a{
+    padding:8px 10px;
+    border-radius: 8px;
+    width: 300px;
+    text-align: center;
+}
+#cart div.buttons a.shopping{
+    border:2px solid rgb(3 69 171);
+}
+#cart div.buttons a.checkout{
+    background-color: rgb(3 69 171);
+    color:#fff;
+}
+#cart div.buttons a.checkout:hover{
+    transition:  all .2s ease-in;
+    background-color: rgb(4, 96, 233);
+}
+#cart div.empty{
+    text-align: center;
+}
+#cart div.empty a{
+    padding:8px 10px;
+    border-radius: 8px;
+    width: 300px;
+    text-align: center;
+    border:2px solid rgb(3 69 171);
+    display: block;
+    margin:auto;
+    margin-top: 50px;
+}
