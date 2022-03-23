@@ -41,7 +41,6 @@ export const AuthProvider = ({children})=>{
 
     let loginUser = async(e)=>{
         e.preventDefault()
-        console.log("Login Form Submitted")
         let response = await fetch('http://localhost:8000/api/v1/auth/token/',{
             method : "POST",
             headers : {
@@ -73,7 +72,6 @@ export const AuthProvider = ({children})=>{
     }
 
     let updateToken = async ()=> {
-        console.log("Update Token Called.................")
         let response = await fetch('http://localhost:8000/api/v1/auth/token/refresh/', {
             method:'POST',
             headers:{

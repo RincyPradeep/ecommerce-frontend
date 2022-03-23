@@ -2,6 +2,7 @@ import React from 'react'
 import './App.css';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
+import { CartProvider } from './context/CartContext';
 
 
 import Header from './components/includes/Header/Header';
@@ -21,6 +22,7 @@ function App() {
     <div>
       <Router>
         <AuthProvider>
+        <CartProvider>
             <Header />     
             <Routes>
               <Route exact path='/' element={<Home/>} />
@@ -33,7 +35,8 @@ function App() {
               <Route path='/profile' element={<Profile/>} />
             </Routes>
             <Footer/>
-          </AuthProvider>
+          </CartProvider>
+         </AuthProvider>
       </Router>
     </div>
   );

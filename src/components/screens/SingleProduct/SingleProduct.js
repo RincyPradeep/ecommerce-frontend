@@ -5,12 +5,13 @@ import sweetalert from 'sweetalert'
 
 import './SingleProduct.css'
 import AuthContext from '../../../context/AuthContext';
+import CartContext from "../../../context/CartContext";
 
 
 const SingleProduct = () => {
   let navigate = useNavigate();
-  let {user} = useContext(AuthContext)
-  let {authTokens, logoutUser} = useContext(AuthContext)
+  let {user,authTokens, logoutUser} = useContext(AuthContext)
+  let {getCart} = useContext(CartContext)
   const [product,setProduct] = useState()
   const { id } = useParams() 
 
@@ -27,6 +28,7 @@ const SingleProduct = () => {
         })
         if(response.status === 200){
           sweetalert("Good","Item Added To Cart","success")
+          getCart(user_id)
           navigate('/')
         }else if(response.statusText === 'Unauthorized'){
           sweetalert("Oops","Please Login Again","error")
@@ -37,17 +39,17 @@ const SingleProduct = () => {
     }
   }
    
-  const getProduct = async () => {
-    const response = await axios.get(`http://localhost:8000/api/v1/products/singleproduct/${id}`);
-    if(response.status === 200){
-      if(response.data.status_code === 6000){
-        setProduct(response.data.data);
-      }else if(response.data.status_code === 6001){
-        sweetalert("Oops","No such Product found","error")
-      }
-    }else{
-      alert('Something went wrong!')
+  const getProduct = () => {
+  axios.get(`http://localhost:8000/api/v1/products/singleproduct/${id}`).then(response=>{
+    if(response.data.status_code === 6000){
+      setProduct(response.data.data);
+    }else if(response.data.status_code === 6001){
+      sweetalert("Oops","No such Product found","error")
     }
+  }).catch(error=>{
+      alert(error)
+    }
+  )
   };
 
   useEffect(() => {
@@ -74,13 +76,18 @@ const SingleProduct = () => {
               </div>
               { product.is_available &&
                 <div className="details-row">
-                    <label htmlFor="quantity">Quantity:(Maximum 5 items/order)</label>
+                    <label htmlFor="quantity">Quantity:(Maximum 10 items/order)</label>
                     <select name="quantity" id="quantity" defaultValue='1'>
                       <option value="1">1</option>
                       <option value="2">2</option>
                       <option value="3">3</option>
                       <option value="4">4</option>
                       <option value="5">5</option>
+                      <option value="6">6</option>
+                      <option value="7">7</option>
+                      <option value="8">8</option>
+                      <option value="9">9</option>
+                      <option value="10">10</option>
                     </select>    
                 </div>         
               }            

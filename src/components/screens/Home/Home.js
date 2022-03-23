@@ -16,8 +16,8 @@ const Home = () => {
     fetchCategories();
   }, [])
 
-  const fetchProducts = async() =>{
-    await axios.get('/').then((response)=>{
+  const fetchProducts = () =>{
+    axios.get('/').then((response)=>{
       setProducts(response.data.data);
     }).catch(err=>{
       alert(err)
@@ -26,7 +26,7 @@ const Home = () => {
 
   const fetchCategories = () =>{
     axios.get('/categories/').then((response)=>{
-      setCategories(response.data);
+      setCategories(response.data.data);
     }).catch(err=>{
       alert(err)
   })
@@ -40,7 +40,7 @@ const Home = () => {
             {
               categories.map((category,index)=>{
                 return(
-                  <li key={index}><Link to="#" className="">{category.name}</Link></li>
+                  <li key={category.id}><Link to="#" className="">{category.name}</Link></li>
                 )
               })
             }    
@@ -51,7 +51,7 @@ const Home = () => {
           {
             products.map((product,index)=>{
               return(
-                <li key={index}>
+                <li key={product.id}>
                   <Link to={`/product/${product.id}`}><ProductCard product={product} /></Link>
                 </li>
               )

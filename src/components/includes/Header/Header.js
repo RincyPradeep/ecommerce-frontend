@@ -1,14 +1,24 @@
 import './Header.css' 
-import React,{useContext} from 'react'
+import React,{useState,useContext,useEffect} from 'react'
 import logo from "../../../assets/images/logo.png";
 import {Link} from 'react-router-dom';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import { Form,FormControl,Button,DropdownButton, Dropdown} from 'react-bootstrap';
 import AuthContext from '../../../context/AuthContext';
+import CartContext from "../../../context/CartContext";
 
 
-const Header = ({carts}) => {
+const Header = () => {
   let {user, logoutUser} = useContext(AuthContext)
+  let {cartLength,getCart,carts} = useContext(CartContext)
+
+  useEffect(()=>{
+    if(user){
+      console.log("HEADER GET CART CALLED")
+      getCart(user.user_id)
+    }
+  },[cartLength,user])
+
   return (
     <section id="header" className="container">
       <div className="nav-left">
@@ -42,7 +52,7 @@ const Header = ({carts}) => {
               <li>
                 <Link to={`/cart/${user.user_id}`}>
                   <ShoppingCartIcon/>
-                  <span id="cart-count">0</span>
+                  <span id="cart-count">{carts.length}</span>
                 </Link>
               </li>
               <li onClick={logoutUser} className="logout-btn">Logout</li>

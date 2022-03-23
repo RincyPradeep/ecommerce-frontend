@@ -1,76 +1,113 @@
 import React, { useState, useEffect, useContext } from "react";
-import "./Cart.css";
-import { Link ,useParams} from "react-router-dom";
+import { Link ,useParams,useNavigate} from "react-router-dom";
 import axios from 'axios'
-// import product from "../../../assets/images/products/studytable.jpeg";
+import sweetalert from 'sweetalert'
 import CloseIcon from "@material-ui/icons/Close";
-import AuthContext from "../../../context/AuthContext";
+
+import "./Cart.css";
+import AuthContext from '../../../context/AuthContext';
+import CartContext from "../../../context/CartContext";
 
 const Cart = () => {
-  const [carts, setCarts] = useState([]);
-  const [products,setProducts] = useState([])
+  let totalAmount=0
+  const navigate = useNavigate();
   const { id } = useParams()
-  let {authTokens, logoutUser} = useContext(AuthContext)
+  const {authTokens} = useContext(AuthContext)
+  const {carts,products,emptyCart,getCart,getProducts} = useContext(CartContext)
+
+  const removeFromCart = (cart_id)=>{
+    axios.post("http://localhost:8000/api/v1/products/removefromcart/",{
+          "user_id" : id, "cart_id" : cart_id
+          },{
+          headers : {
+            'Authorization':'Bearer ' + String(authTokens.access)
+          },           
+      }).then(response=>{
+        sweetalert("Good","Item Deleted","success")
+        // navigate(`/cart/${id}`)
+        window.location.reload()
+      }).catch(error=>{
+        alert(error)
+      })
+  }
+
+  const changeCartQuantity=(cartId,quantity)=>{
+    axios.post("http://localhost:8000/api/v1/products/changecartquantity/",{
+            "cart_id" : cartId, "quantity" : quantity
+            },{
+            headers : {
+                'Authorization':'Bearer ' + String(authTokens.access)
+            },           
+        }).then(response=>{
+          window.location.reload()
+        }).catch(error=>{
+          alert(error)
+        })
+  }
+
+  const findTotal =(quantity,price)=>{
+    let subTotal = quantity*price
+    return(
+      totalAmount += subTotal
+    )
+  }
 
   useEffect(()=>{
     getProducts()
-    getCart()
+    getCart(id)
   },[])
 
-  const getProducts = async() =>{
-    await axios.get('http://localhost:8000/api/v1/products/').then((response)=>{
-      setProducts(response.data.data);
-    }).catch(err=>{
-      alert(err)
-  })
-  }
-
-  let getCart = async() =>{
-    let response = await fetch(`http://localhost:8000/api/v1/products/cart/${id}`, {
-        method:'GET',
-        headers:{
-            'Content-Type':'application/json',
-            'Authorization':'Bearer ' + String(authTokens.access)
-        }
-    })
-    let data = await response.json()
-    console.log("DATA in Cart:",data.data)
-
-    if(response.status === 200){
-        setCarts(data.data)
-    }else if(response.statusText === 'Unauthorized'){
-        logoutUser()
-    }   
-}
 
   return (
     <section id="cart" className="container">
-      {carts ?
+      {emptyCart ?
+      <div className="empty">
+      <h1>{emptyCart}</h1>
+      <Link to="/" className="shopping">
+          CONTINUE SHOPPING
+      </Link>
+    </div> :
       <>
         <div className="head">
-          <h5>Total Cart Products (-)</h5>
+          <h5>Total Cart Products ({carts.length})</h5>
         </div>
         <ul className="cart-items">         
           {carts.map((cart, index) => {
             let item = products.find(product=>product.id === cart.product_id)
-            console.log("ITEM:",item)
             if(item){
+              totalAmount = findTotal(cart.quantity , item.price)
               return (
-                <li className="cart-item" key={index}>
-                  <img src={item.image} alt="" />
+                <li className="cart-item" key={cart.id}>
+                  <Link to={`/product/${item.id}`}><img src={item.image} alt={item.title} /></Link>
                   <h5>
                     {item.title}
                   </h5>
                   <div className="quantity">
-                    <label htmlFor="quantity">QUANTITY</label>
-                    <input type="text" value={cart.quantity} />
+                    <p>QUANTITY</p>
+                    <select name="quantity" id="quantity" defaultValue={cart.quantity} 
+                            onChange={(e)=>changeCartQuantity(cart.id,e.target.value)}>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
+                      <option value="7">7</option>
+                      <option value="8">8</option>
+                      <option value="9">9</option>
+                      <option value="10">10</option>
+                    </select>   
+                  </div>
+                  <div className="price">
+                    <p>PRICE</p>
+                    <p>&#x20B9;{item.price}</p>
                   </div>
                   <div className="price">
                     <p>SUBTOTAL</p>
-                    <p>{cart.quantity * item.price}</p>
+                    <p>&#x20B9;{(cart.quantity * item.price).toFixed(2)}</p>                    
                   </div>
                   <div className="close-btn">
-                    <CloseIcon />
+                    <CloseIcon onClick={()=>removeFromCart(cart.id)} />
                   </div>
                 </li>
               );
@@ -80,9 +117,10 @@ const Cart = () => {
                 <h1>Product not Found</h1>
               )
             }
-          })}        
+          })
+        }                 
         </ul>
-        <h4>TOTAL : $499</h4>
+        <h4>TOTAL : &#x20B9;{totalAmount.toFixed(2)}</h4>
         <div className="buttons">
           <Link to="/" className="shopping">
             CONTINUE SHOPPING
@@ -91,13 +129,7 @@ const Cart = () => {
             CHECKOUT
           </Link>
         </div>
-      </>:
-      <div className="empty">
-        <h1>Your cart is empty</h1>
-        <Link to="/" className="shopping">
-            CONTINUE SHOPPING
-          </Link>
-      </div>
+      </>      
     }
     </section>
   );
