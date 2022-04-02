@@ -6,14 +6,15 @@ import CloseIcon from "@material-ui/icons/Close";
 
 import "./Cart.css";
 import AuthContext from '../../../context/AuthContext';
-import CartContext from "../../../context/CartContext";
+import ProductContext from "../../../context/ProductContext";
 
 const Cart = () => {
+  // const [total, setTotal] = useState(0)
   let totalAmount=0
   const navigate = useNavigate();
   const { id } = useParams()
   const {authTokens} = useContext(AuthContext)
-  const {carts,products,emptyCart,getCart,getProducts} = useContext(CartContext)
+  let {carts,products,emptyCart,getCart,getProducts,setTotalAmount} = useContext(ProductContext)
 
   const removeFromCart = (cart_id)=>{
     axios.post("http://localhost:8000/api/v1/products/removefromcart/",{
@@ -46,8 +47,11 @@ const Cart = () => {
   }
 
   const findTotal =(quantity,price)=>{
+    
+    price = parseFloat(price)
     let subTotal = quantity*price
-    return(
+       
+    return(          
       totalAmount += subTotal
     )
   }
@@ -56,6 +60,11 @@ const Cart = () => {
     getProducts()
     getCart(id)
   },[])
+
+  useEffect(()=>{
+    setTotalAmount(totalAmount)
+    console.log("Total Amount changed.............................",totalAmount)
+  },[totalAmount])
 
 
   return (
@@ -73,9 +82,10 @@ const Cart = () => {
         </div>
         <ul className="cart-items">         
           {carts.map((cart, index) => {
-            let item = products.find(product=>product.id === cart.product_id)
+            let item = products.find(product=>product.id === cart.product)
             if(item){
               totalAmount = findTotal(cart.quantity , item.price)
+              
               return (
                 <li className="cart-item" key={cart.id}>
                   <Link to={`/product/${item.id}`}><img src={item.image} alt={item.title} /></Link>
@@ -120,13 +130,14 @@ const Cart = () => {
           })
         }                 
         </ul>
-        <h4>TOTAL : &#x20B9;{totalAmount.toFixed(2)}</h4>
+        <h4>TOTAL : &#x20B9; {totalAmount}</h4>
+        {/* <h4>Total: &#x20B9;{total}</h4> */}
         <div className="buttons">
           <Link to="/" className="shopping">
             CONTINUE SHOPPING
           </Link>
-          <Link to="/checkout" className="checkout">
-            CHECKOUT
+          <Link to="/place-order" className="place-order">
+          PLACE ORDER
           </Link>
         </div>
       </>      

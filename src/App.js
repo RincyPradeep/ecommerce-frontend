@@ -2,7 +2,7 @@ import React from 'react'
 import './App.css';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
-import { CartProvider } from './context/CartContext';
+import { CartProvider } from './context/ProductContext';
 
 
 import Header from './components/includes/Header/Header';
@@ -15,6 +15,7 @@ import Checkout from './components/screens/Checkout/Checkout';
 import Order from './components/screens/Order/Order';
 import Signup from './components/screens/Signup/Signup';
 import Profile from './components/screens/Profile/Profile';
+// import {Toaster} from 'react-hot-toast'
 
 
 function App() { 
@@ -24,19 +25,20 @@ function App() {
         <AuthProvider>
         <CartProvider>
             <Header />     
+            {/* <Toaster /> */}
             <Routes>
               <Route exact path='/' element={<Home/>} />
               <Route path='/product/:id' element={<SingleProduct/>} />
-              <Route path='/cart/:id' element={<Cart />} />
-              <Route path='/checkout' element={<Checkout/>} />
+              <Route path='/cart/:id' element={<Cart />} />             
+              <Route path='/place-order' element={<Checkout />} />             
               <Route path='/orders' element={<Order/>} />
               <Route path='/signup' element={<Signup/>} />
               <Route path='/login' element={<Login/>} />
               <Route path='/profile' element={<Profile/>} />
             </Routes>
             <Footer/>
-          </CartProvider>
-         </AuthProvider>
+        </CartProvider>
+        </AuthProvider>
       </Router>
     </div>
   );

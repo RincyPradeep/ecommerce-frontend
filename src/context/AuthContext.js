@@ -1,6 +1,7 @@
 import {createContext, useState, useEffect} from 'react'
 import { useNavigate } from 'react-router-dom';
 import jwt_decode from "jwt-decode";
+import axios from 'axios'
 
 
 const AuthContext = createContext()
@@ -13,6 +14,11 @@ export const AuthProvider = ({children})=>{
     const [authTokens,setAuthTokens] = useState(()=> localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')) : null)
     const [loading, setLoading] = useState(true)
     const [errMessage,setErrMessage] = useState(null)
+
+    const [name,setName] = useState()
+    const [address,setAddress] = useState()
+    const [pincode,setPincode] = useState()
+    const [mobile,setMobile] = useState()
 
     const createUser = async(e)=>{
         e.preventDefault()
@@ -95,13 +101,42 @@ export const AuthProvider = ({children})=>{
         }
     }
 
+
+    const getProfile = (userid) =>{
+        axios.get(`http://localhost:8000/api/v1/auth/get_profile/${userid}`,
+        {
+         headers : {
+           'Authorization':'Bearer ' + String(authTokens.access)
+         },           
+       }).then((response)=>{
+         if (response.data.status_code === 6000){
+             let profile = response.data.data;
+             setName(profile.name)
+             setAddress(profile.address)
+             setPincode(profile.pincode)
+             setMobile(profile.mobile)
+         }
+           }).catch(err=>{
+             alert(err)
+         })
+     } 
+
     let contextData = {
         user : user,
         authTokens : authTokens,
         errMessage : errMessage,
+        name : name,
+        address : address,
+        pincode : pincode,
+        mobile : mobile,
         loginUser : loginUser,
         logoutUser:logoutUser,
-        createUser : createUser
+        createUser : createUser,
+        getProfile : getProfile,
+        setName : setName,
+        setAddress : setAddress,
+        setPincode : setPincode,
+        setMobile : setMobile
     }
 
     useEffect(()=> {

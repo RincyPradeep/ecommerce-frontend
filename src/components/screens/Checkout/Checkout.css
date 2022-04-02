@@ -1,6 +1,7 @@
 #checkout{
-margin-top: 50px;
-margin-bottom: 50px;
+    height: 100vh;
+    margin-top: 100px;
+    /* margin-bottom: 50px; */
 }
 #checkout form{
     display:flex;
@@ -11,4 +12,14 @@ margin-bottom: 50px;
 }
 #checkout form div.right{
     width:40%;
+}
+#checkout form div.right button.checkout-btn{
+    padding: 8px 10px;
+    border-radius: 8px;
+    border:none;
+    outline: none;
+    width: 300px;
+    text-align: center;
+    background-color: rgb(3 69 171);
+    color: #fff;
 }

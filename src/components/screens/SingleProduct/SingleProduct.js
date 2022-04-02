@@ -5,13 +5,13 @@ import sweetalert from 'sweetalert'
 
 import './SingleProduct.css'
 import AuthContext from '../../../context/AuthContext';
-import CartContext from "../../../context/CartContext";
+import ProductContext from "../../../context/ProductContext";
 
 
 const SingleProduct = () => {
   let navigate = useNavigate();
   let {user,authTokens, logoutUser} = useContext(AuthContext)
-  let {getCart} = useContext(CartContext)
+  let {getCart} = useContext(ProductContext)
   const [product,setProduct] = useState()
   const { id } = useParams() 
 

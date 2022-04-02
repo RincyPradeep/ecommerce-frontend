@@ -96,11 +96,11 @@
 #cart div.buttons a.shopping{
     border:2px solid rgb(3 69 171);
 }
-#cart div.buttons a.checkout{
+#cart div.buttons a.place-order{
     background-color: rgb(3 69 171);
     color:#fff;
 }
-#cart div.buttons a.checkout:hover{
+#cart div.buttons a.place-order:hover{
     transition:  all .2s ease-in;
     background-color: rgb(4, 96, 233);
 }

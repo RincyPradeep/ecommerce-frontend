@@ -3,21 +3,24 @@ import axios from 'axios'
 
 import AuthContext from './AuthContext';
 
-const CartContext = createContext()
+const ProductContext = createContext()
 
-export default CartContext
+export default ProductContext
 
 export const CartProvider = ({children})=>{
     const [carts, setCarts] = useState([])
     const [cartLength,setCartLength] = useState(0)
     const [emptyCart,setEmptyCart] = useState()
     const [products,setProducts] = useState([])
+    const [showSearchBar,setShowSearchBar] = useState(false)
+    const [totalAmount,setTotalAmount] = useState(0)
     let {authTokens} = useContext(AuthContext)
     
 
     const getProducts = async() =>{
         await axios.get('http://localhost:8000/api/v1/products/').then((response)=>{
           setProducts(response.data.data);
+          console.log("RESONCE!:",response)
         }).catch(err=>{
           alert(err)
       })
@@ -32,7 +35,7 @@ export const CartProvider = ({children})=>{
             }
         })
         let data = await response.json()
-    
+        
         if(response.status === 200){
           if(data.status_code === 6000){
             setCarts(data.data)
@@ -50,13 +53,18 @@ export const CartProvider = ({children})=>{
         cartLength : cartLength,
         products : products,
         emptyCart : emptyCart,
+        showSearchBar : showSearchBar,
+        totalAmount : totalAmount,
+        setProducts : setProducts,
         getCart : getCart,
-        getProducts : getProducts
+        getProducts : getProducts,
+        setShowSearchBar : setShowSearchBar,
+        setTotalAmount : setTotalAmount
     }
 
     return(
-        <CartContext.Provider value={contextData}>
+        <ProductContext.Provider value={contextData}>
             {children}
-        </CartContext.Provider>
+        </ProductContext.Provider>
     )
 }

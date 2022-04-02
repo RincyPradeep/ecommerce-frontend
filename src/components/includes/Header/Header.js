@@ -1,20 +1,36 @@
-import './Header.css' 
 import React,{useState,useContext,useEffect} from 'react'
-import logo from "../../../assets/images/logo.png";
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import { Form,FormControl,Button,DropdownButton, Dropdown} from 'react-bootstrap';
+import axios from 'axios'
+
+import './Header.css' 
+import logo from "../../../assets/images/logo.png";
 import AuthContext from '../../../context/AuthContext';
-import CartContext from "../../../context/CartContext";
+import ProductContext from "../../../context/ProductContext";
 
 
 const Header = () => {
+  const navigate = useNavigate();
+  const [searchItem,setSearchItem] = useState()
   let {user, logoutUser} = useContext(AuthContext)
-  let {cartLength,getCart,carts} = useContext(CartContext)
+  let {cartLength,getCart,carts,setProducts,showSearchBar} = useContext(ProductContext)
+
+  const handleChange = (value)=>{
+    setSearchItem(value)
+  }
+
+  const handleSearch = (event) =>{
+    event.preventDefault()
+    axios.get("/search/",{params :{q : searchItem}}).then((response)=>{
+      setProducts(response.data.data);
+    }).catch(err=>{
+      alert(err)
+  })
+  }
 
   useEffect(()=>{
     if(user){
-      console.log("HEADER GET CART CALLED")
       getCart(user.user_id)
     }
   },[cartLength,user])
@@ -28,17 +44,22 @@ const Header = () => {
           </Link>
         </h1>
       </div>
+      {showSearchBar && 
       <div className="nav-middle">
-        <Form className="d-flex">
+        <Form className="d-flex" onSubmit={(event)=> handleSearch(event)}>
           <FormControl
             type="search"
+            id="query"
+            name="query"
             placeholder="Search"
             className="me-2"
             aria-label="Search"
+            onChange ={(e)=>handleChange(e.target.value)}
           />
-          <Button variant="outline-success">Search</Button>
+          <Button variant="outline-success" type='submit'>Search</Button>
         </Form>
       </div>
+      }
       <div className="nav-right">
         <ul>          
           { user ?

@@ -1,22 +1,30 @@
-import React,{useState,useEffect}  from 'react'
+import React,{useState,useEffect,useContext}  from 'react'
 import axios from 'axios'
 import {Link} from 'react-router-dom';
 
 import './Home.css'
 import ProductCard from '../ProductCard/ProductCard'
+import ProductContext from "../../../context/ProductContext";
 
 
 const Home = () => {
   axios.defaults.baseURL="http://localhost:8000/api/v1/products"
-  const [products,setProducts] = useState([])
+  let {setProducts,products,setShowSearchBar} = useContext(ProductContext)
   const [categories,setCategories] = useState([])
+  const [active,setActive] = useState(0)
 
   useEffect(() => {
+    setShowSearchBar(true)
     fetchProducts(); 
     fetchCategories();
+    
+    return () => {
+      setShowSearchBar(false)
+    }
   }, [])
 
   const fetchProducts = () =>{
+    setActive(0)
     axios.get('/').then((response)=>{
       setProducts(response.data.data);
     }).catch(err=>{
@@ -32,15 +40,24 @@ const Home = () => {
   })
   }
 
+  const fetchCategoryProducts = (id) =>{
+    setActive(id)
+    axios.get(`/category-products/${id}`).then((response)=>{
+      setProducts(response.data.data);
+    }).catch(err=>{
+      alert(err)
+  })
+  }
+
   return (
     <section id="home" className="container">
       <nav className="menu">
         <ul>              
-            <li><Link to="#" className="active">All</Link></li>  
+            <li onClick={fetchProducts} className={active===0 ? 'active' : null}>All</li>  
             {
               categories.map((category,index)=>{
                 return(
-                  <li key={category.id}><Link to="#" className="">{category.name}</Link></li>
+                  <li key={category.id} onClick={()=>fetchCategoryProducts(category.id)} className={active=== category.id ? 'active' : null}>{category.name}</li>
                 )
               })
             }    
