@@ -1,8 +1,8 @@
 import {createContext, useState, useEffect} from 'react'
 import { useNavigate } from 'react-router-dom';
+
 import jwt_decode from "jwt-decode";
 import axios from 'axios'
-
 
 const AuthContext = createContext()
 
@@ -15,10 +15,10 @@ export const AuthProvider = ({children})=>{
     const [loading, setLoading] = useState(true)
     const [errMessage,setErrMessage] = useState(null)
 
-    const [name,setName] = useState()
-    const [address,setAddress] = useState()
-    const [pincode,setPincode] = useState()
-    const [mobile,setMobile] = useState()
+    const [name,setName] = useState("")
+    const [address,setAddress] = useState("")
+    const [pincode,setPincode] = useState("")
+    const [mobile,setMobile] = useState("")
 
     const createUser = async(e)=>{
         e.preventDefault()

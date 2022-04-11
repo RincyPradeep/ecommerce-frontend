@@ -1,5 +1,6 @@
 import React,{useState,useEffect,useContext} from 'react'
 import {useParams,useNavigate} from 'react-router-dom';
+
 import axios from 'axios'
 import sweetalert from 'sweetalert'
 
@@ -13,6 +14,7 @@ const SingleProduct = () => {
   let {user,authTokens, logoutUser} = useContext(AuthContext)
   let {getCart} = useContext(ProductContext)
   const [product,setProduct] = useState()
+  const [quantity,setQuantity] = useState(1)
   const { id } = useParams() 
 
   const addToCart = async( product_id,quantity)=>{
@@ -68,7 +70,7 @@ const SingleProduct = () => {
             <div className="details">
               <div className="details-row">
                 <p>Price :</p>
-                <p>&#x20B9; {product.price}</p>
+                <p>&#x20B9; {product.price*quantity}</p>
               </div>
               <div className="details-row">
                 <p>Status :</p>
@@ -76,24 +78,19 @@ const SingleProduct = () => {
               </div>
               { product.is_available &&
                 <div className="details-row">
-                    <label htmlFor="quantity">Quantity:(Maximum 10 items/order)</label>
-                    <select name="quantity" id="quantity" defaultValue='1'>
+                    <label htmlFor="quantity">Quantity:<small>(Maximum 5 items/order)</small></label>
+                    <select name="quantity" id="quantity" onChange={(e)=>setQuantity(e.target.value)}>
                       <option value="1">1</option>
                       <option value="2">2</option>
                       <option value="3">3</option>
                       <option value="4">4</option>
                       <option value="5">5</option>
-                      <option value="6">6</option>
-                      <option value="7">7</option>
-                      <option value="8">8</option>
-                      <option value="9">9</option>
-                      <option value="10">10</option>
                     </select>    
                 </div>         
               }            
             </div>
             { product.is_available &&
-              <button onClick={()=>addToCart( product.id,document.getElementById("quantity").value)}>Add to Cart</button>
+              <button onClick={()=>addToCart( product.id,quantity)}>Add to Cart</button>
             }
         </div>
         </>

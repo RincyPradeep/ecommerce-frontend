@@ -1,4 +1,5 @@
-import React,{useState,useContext, useEffect} from 'react'
+import React,{useContext, useEffect} from 'react'
+
 import axios from 'axios'
 import sweetalert from 'sweetalert'
 
@@ -12,9 +13,6 @@ const Profile = () => {
 
   let userid = user.user_id
   
-
-  
-
   const updateProfile=(e)=>{
     e.preventDefault()
     axios.post("http://localhost:8000/api/v1/auth/update_profile/",{
@@ -24,7 +22,6 @@ const Profile = () => {
                 'Authorization':'Bearer ' + String(authTokens.access)
             },           
         }).then(response=>{
-          console.log("RESPONSE:-----------------",response)
           sweetalert("Good","Profile Updated","success")
         }).catch(error=>{
           alert(error)

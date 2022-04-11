@@ -1,19 +1,22 @@
 import React, { useState, useEffect , useContext} from "react";
+import {useNavigate} from "react-router-dom";
+
+import sweetalert from 'sweetalert'
 import Axios from "axios";
 
 import "./Checkout.css";
 import AuthContext from '../../../context/AuthContext';
 import ProductContext from "../../../context/ProductContext";
-import sweetalert from 'sweetalert'
 
 
 const Checkout = () => {
 
-  const {user,getProfile,name,address,pincode,mobile,setName,setAddress,setPincode,setMobile} = useContext(AuthContext)
-  let {totalAmount,getCart,carts} = useContext(ProductContext)
+  const {authTokens,user,getProfile,name,address,pincode,mobile,setName,setAddress,setPincode,setMobile} = useContext(AuthContext)
+  let {getCart,carts,totalAmount} = useContext(ProductContext)
+
+  const navigate = useNavigate();
 
   let userId = user.user_id;
-  const [products,setProducts] = useState([{}])
   const [amount, setAmount] = useState(totalAmount);
 
   useEffect(()=>{
@@ -38,15 +41,13 @@ const handlePaymentSuccess = async (response) => {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        'Authorization':'Bearer ' + String(authTokens.access)
       },
     })
       .then((res) => {
-        console.log("RESONSE FROM AYMENT SUCCESS",res)
         console.log("Everything is OK!");
         sweetalert("Good",res.data.message,"success")
-        console.log(res.data.message)
-        setName("");
-        setAmount("");
+        navigate(`/cart/${user.user_id}`)
       })
       .catch((err) => {
         console.log(err);
@@ -64,14 +65,9 @@ const loadScript = () => {
   document.body.appendChild(script);
 };
 
-const showRazorpay = async (event) => {
+const showRazorpay = async(event) => {
   event.preventDefault();
-  const res = await loadScript();
-  // carts.map((cart)=>{
-  //   return(
-  //     setProducts([...products,{"product_id":cart.product,"quantity" : cart.quantity}])
-  //   )
-  // })
+  const res = loadScript();
 
   const data = await Axios({
     url: "http://localhost:8000/api/v1/razorpay/pay/",
@@ -79,24 +75,24 @@ const showRazorpay = async (event) => {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      'Authorization':'Bearer ' + String(authTokens.access)
     },
     data: {
       "amount":amount,"pincode":pincode,"mobile":mobile,"name":name,"userId":userId,"address":address,"carts":carts
     }
   }).then((res) => {
-    console.log("RESONSE FROM START PAYMENT",res)
     return res;
   }).catch(error=>{
     alert(error)
   });
-
+  
   // in data we will receive an object from the backend with the information about the payment
   //that has been made by the user
 
   var options = {
     key_id: process.env.REACT_APP_PUBLIC_KEY, // in react your environment variable must start with REACT_APP_
     key_secret: process.env.REACT_APP_SECRET_KEY,
-    // amount: data.data.payment.amount,
+    
     amount : totalAmount,
     currency: "INR",
     name: "Org. Name",
@@ -135,15 +131,15 @@ const showRazorpay = async (event) => {
           <div>
             <label htmlFor="name">Name</label>
             <input className="form-control" type="text" id="name" name="name" value={name}
-            onChange={(e) => setName(e.target.value)} required />
+            onChange={(e) => setName(e.target.value)} required /><br/>
 
             <label htmlFor="address">Address</label>
             <textarea className="form-control" type="text" id="address" name="address" value={address}
-            onChange={(e) => setAddress(e.target.value)} rows='5' required />
+            onChange={(e) => setAddress(e.target.value)} rows='5' required /><br/>
 
             <label htmlFor="pincode">Pincode</label>
             <input className="form-control" type="number" id="pincode" name="pincode" value={pincode}
-            onChange={(e) => setPincode(e.target.value)} required />
+            onChange={(e) => setPincode(e.target.value)} required /><br/>
 
             <label htmlFor="mobile">Mobile</label>
             <input className="form-control" type="number" id="mobile" name="mobile" value={mobile}
@@ -159,8 +155,8 @@ const showRazorpay = async (event) => {
             <hr />
              
             <button onClick={showRazorpay} className="btn btn-primary btn-block">
-                Pay with razorpay
-              </button>  
+              Pay with razorpay
+            </button>  
         </div>
       </form>
     </section>

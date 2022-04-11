@@ -87,25 +87,30 @@
     align-items: center;
     margin-top: 30px;
 }
-#cart div.buttons a{
+#cart div.buttons a,button{
     padding:8px 10px;
     border-radius: 8px;
     width: 300px;
     text-align: center;
+    outline: none;
+    border:none;
 }
 #cart div.buttons a.shopping{
     border:2px solid rgb(3 69 171);
 }
-#cart div.buttons a.place-order{
+#cart div.buttons button.place-order{
     background-color: rgb(3 69 171);
     color:#fff;
 }
-#cart div.buttons a.place-order:hover{
+#cart div.buttons button.place-order:hover{
     transition:  all .2s ease-in;
     background-color: rgb(4, 96, 233);
 }
 #cart div.empty{
     text-align: center;
+}
+#cart div.empty h3{
+  font-family: Roboto;
 }
 #cart div.empty a{
     padding:8px 10px;

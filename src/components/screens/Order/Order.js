@@ -26,11 +26,11 @@ const Order = () => {
                     <td>sdasd dffdsf dfdsf dsfsdf </td>
                     <td>683456</td>
                     <td>9876543235</td>
-                    <td><i class="fa fa-inr pr-2"></i>$499</td>
+                    <td><i className="fa fa-inr pr-2"></i>$499</td>
                     <td>Online</td>
                     <td>ordered</td>
                     {/* <td>
-                        <a href="/view-order-products/{{this._id}}" class="btn order-btn" style="width:128px">View Products</a>
+                        <a href="/view-order-products/{{this._id}}" className="btn order-btn" style="width:128px">View Products</a>
                     </td>                     */}
                 </tr>
                 

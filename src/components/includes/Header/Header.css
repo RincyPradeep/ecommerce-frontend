@@ -14,6 +14,7 @@
     color: rgb(3 69 171);
     border-color: rgb(3 69 171);
     box-shadow: none;
+    flex:1;
 }
 #header div.nav-middle form{
     width:400px;
@@ -51,6 +52,7 @@
     border:none;
     outline:none;
     box-shadow: none;
+    width: 100px;
 }
 #header div.nav-right ul li .MuiSvgIcon-root {
     fill: rgb(3 69 171);

@@ -1,5 +1,6 @@
 import React,{useState,useContext,useEffect} from 'react'
 import {Link, useNavigate} from 'react-router-dom';
+
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import { Form,FormControl,Button,DropdownButton, Dropdown} from 'react-bootstrap';
 import axios from 'axios'
@@ -11,10 +12,10 @@ import ProductContext from "../../../context/ProductContext";
 
 
 const Header = () => {
-  const navigate = useNavigate();
+  
   const [searchItem,setSearchItem] = useState()
   let {user, logoutUser} = useContext(AuthContext)
-  let {cartLength,getCart,carts,setProducts,showSearchBar} = useContext(ProductContext)
+  let {cartLength,getCart,carts,setProducts,showSearchBar,emptyCart} = useContext(ProductContext)
 
   const handleChange = (value)=>{
     setSearchItem(value)
@@ -33,7 +34,7 @@ const Header = () => {
     if(user){
       getCart(user.user_id)
     }
-  },[cartLength,user])
+  },[carts,user])
 
   return (
     <section id="header" className="container">
@@ -67,13 +68,13 @@ const Header = () => {
               <li>
                 <DropdownButton id="dropdown-basic-button" title={user.username}>
                   <Dropdown.Item href="/profile">Profile</Dropdown.Item>
-                  <Dropdown.Item href="/orders">Orders</Dropdown.Item>
+                  <Dropdown.Item href={`/orders/${user.user_id}`}>Orders</Dropdown.Item>
                 </DropdownButton>
               </li>
               <li>
                 <Link to={`/cart/${user.user_id}`}>
-                  <ShoppingCartIcon/>
-                  <span id="cart-count">{carts.length}</span>
+                  <ShoppingCartIcon/>                  
+                    <span id="cart-count">{emptyCart? 0 : cartLength}</span>
                 </Link>
               </li>
               <li onClick={logoutUser} className="logout-btn">Logout</li>

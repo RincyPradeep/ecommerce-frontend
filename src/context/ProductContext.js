@@ -10,7 +10,7 @@ export default ProductContext
 export const CartProvider = ({children})=>{
     const [carts, setCarts] = useState([])
     const [cartLength,setCartLength] = useState(0)
-    const [emptyCart,setEmptyCart] = useState()
+    const [emptyCart,setEmptyCart] = useState(null)
     const [products,setProducts] = useState([])
     const [showSearchBar,setShowSearchBar] = useState(false)
     const [totalAmount,setTotalAmount] = useState(0)
@@ -20,7 +20,6 @@ export const CartProvider = ({children})=>{
     const getProducts = async() =>{
         await axios.get('http://localhost:8000/api/v1/products/').then((response)=>{
           setProducts(response.data.data);
-          console.log("RESONCE!:",response)
         }).catch(err=>{
           alert(err)
       })
@@ -39,6 +38,7 @@ export const CartProvider = ({children})=>{
         if(response.status === 200){
           if(data.status_code === 6000){
             setCarts(data.data)
+            setEmptyCart(null)
             setCartLength(carts.length)
           } else if(data.status_code === 6001){
             setEmptyCart(data.message)

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Card } from 'react-bootstrap';
+
 import './ProductCard.css'
-// import product from '../../../assets/images/products/studytable.jpeg'
 
 
 const ProductCard = (props) => {
