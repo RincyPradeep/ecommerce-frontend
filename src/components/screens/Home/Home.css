@@ -21,8 +21,9 @@
 #home div.products ul{
     display: flex;
     align-items: center;
-    /* justify-content: space-between; */
+    justify-content: center;
     flex-wrap: wrap;
+    margin-right: -40px;
 }
 #home div.products ul li{
     margin-right: 40px;
@@ -33,6 +34,21 @@
     box-shadow: 1px 8px 20px grey;
     transition:  box-shadow .2s ease-in;
 }
-#home div.products ul li:nth-child(4n){
+/* #home div.products ul li:nth-child(4n){
     margin-right: 0;
+} */
+
+@media all and (max-width:768px){
+    #header div.nav-middle {
+        display: none;
+    }
+}
+
+@media all and (max-width:480px){
+    #home div.products ul {
+        margin-right: 0px;
+    }
+    #home div.products ul li {
+        margin-right: 0;
+    }
 }

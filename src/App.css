@@ -9,12 +9,13 @@
 ul,
 ol {
   list-style: none;
+  padding-left: 0;
 }
 a{
   text-decoration: none;
   color:black;
 }
-.container{
+.wrapper{
   width:90%;
   margin:0 auto;
 }

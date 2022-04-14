@@ -2,23 +2,28 @@ import React,{useState,useEffect,useContext}  from 'react'
 import {Link} from 'react-router-dom';
 
 import axios from 'axios'
+import {Helmet} from 'react-helmet'
 
 import './Home.css'
 import ProductCard from '../ProductCard/ProductCard'
 import ProductContext from "../../../context/ProductContext";
+import AuthContext from '../../../context/AuthContext';
 
 
 const Home = () => {
   axios.defaults.baseURL="http://localhost:8000/api/v1/products"
-  let {setProducts,products,setShowSearchBar} = useContext(ProductContext)
+  let {setProducts,products,setShowSearchBar,getCart} = useContext(ProductContext)
   const [categories,setCategories] = useState([])
   const [active,setActive] = useState(0)
+  let {user} = useContext(AuthContext)
 
   useEffect(() => {
     setShowSearchBar(true)
     fetchProducts(); 
     fetchCategories();
-    
+    if(user){
+      getCart(user.user_id)
+    }
     return () => {
       setShowSearchBar(false)
     }
@@ -51,14 +56,15 @@ const Home = () => {
   }
 
   return (
-    <section id="home" className="container">
+    <section id="home" className="wrapper">
+      <Helmet><title>Ecommerce App| Home</title></Helmet>
       <nav className="menu">
         <ul>              
-            <li onClick={fetchProducts} className={active===0 ? 'active' : null}>All</li>  
+            <li onClick={fetchProducts} className={active===0 ? 'active' : ""}>All</li>  
             {
               categories.map((category,index)=>{
                 return(
-                  <li key={category.id} onClick={()=>fetchCategoryProducts(category.id)} className={active=== category.id ? 'active' : null}>{category.name}</li>
+                  <li key={category.id} onClick={()=>fetchCategoryProducts(category.id)} className={active=== category.id ? 'active' : ""}>{category.name}</li>
                 )
               })
             }    

@@ -35,6 +35,7 @@
 #header div.nav-right ul li{
     margin-right: 30px;
 }
+
 #header div.nav-right ul li:last-child{
     margin-right: 0;
 }
@@ -59,4 +60,22 @@
 }
 #header div.nav-right ul li.logout-btn{
     cursor:pointer;
+}
+
+@media all and (max-width:1280px){
+    #header div.nav-left h1 a img {
+        width: 80px;
+    }
+    #header div.nav-middle form {
+        width: 280px;
+    }
+}
+
+@media all and (max-width:360px){
+    #header div.nav-left h1 a img {
+        width: 70px;
+    }
+    #header div.nav-right ul li {
+        margin-right: 15px;
+    }
 }

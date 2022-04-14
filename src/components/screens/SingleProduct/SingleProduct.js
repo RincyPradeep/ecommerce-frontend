@@ -3,6 +3,7 @@ import {useParams,useNavigate} from 'react-router-dom';
 
 import axios from 'axios'
 import sweetalert from 'sweetalert'
+import {Helmet} from 'react-helmet'
 
 import './SingleProduct.css'
 import AuthContext from '../../../context/AuthContext';
@@ -59,7 +60,8 @@ const SingleProduct = () => {
   },[]);
 
   return (
-    <section id="single-product" className='container'>
+    <section id="single-product" className='wrapper'>
+      <Helmet><title>Ecommerce App| Product</title></Helmet>
       {product && <>
         <div className='left'>
             <img src={product.image} alt="product" />
@@ -78,7 +80,7 @@ const SingleProduct = () => {
               </div>
               { product.is_available &&
                 <div className="details-row">
-                    <label htmlFor="quantity">Quantity:<small>(Maximum 5 items/order)</small></label>
+                    <label htmlFor="quantity">Quantity: <small><i>(Maximum 5 items/order)</i></small></label>
                     <select name="quantity" id="quantity" onChange={(e)=>setQuantity(e.target.value)}>
                       <option value="1">1</option>
                       <option value="2">2</option>

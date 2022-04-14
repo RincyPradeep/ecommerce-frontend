@@ -3,6 +3,7 @@ import {useNavigate} from "react-router-dom";
 
 import sweetalert from 'sweetalert'
 import Axios from "axios";
+import {Helmet} from 'react-helmet'
 
 import "./Checkout.css";
 import AuthContext from '../../../context/AuthContext';
@@ -18,7 +19,8 @@ const Checkout = () => {
 
   let userId = user.user_id;
   const [amount, setAmount] = useState(totalAmount);
-
+  const [errMessage,setErrMessage] = useState("")
+ 
   useEffect(()=>{
     getCart(userId)
     getProfile(userId)
@@ -43,8 +45,7 @@ const handlePaymentSuccess = async (response) => {
         "Content-Type": "application/json",
         'Authorization':'Bearer ' + String(authTokens.access)
       },
-    })
-      .then((res) => {
+    }).then((res) => {
         console.log("Everything is OK!");
         sweetalert("Good",res.data.message,"success")
         navigate(`/cart/${user.user_id}`)
@@ -54,7 +55,7 @@ const handlePaymentSuccess = async (response) => {
         sweetalert("Opps",err,"error")
       });
   } catch (error) {
-    console.log(console.error());
+    alert(error)
   }
 };
 
@@ -81,14 +82,19 @@ const showRazorpay = async(event) => {
       "amount":amount,"pincode":pincode,"mobile":mobile,"name":name,"userId":userId,"address":address,"carts":carts
     }
   }).then((res) => {
+    console.log("RESPONSE:-------",res.data.status_code)
     return res;
   }).catch(error=>{
-    alert(error)
+        alert(error)
   });
+  
+  if(data.data.status_code === 6001){
+    setErrMessage(data.data.message)
+  }else{
   
   // in data we will receive an object from the backend with the information about the payment
   //that has been made by the user
-
+ 
   var options = {
     key_id: process.env.REACT_APP_PUBLIC_KEY, // in react your environment variable must start with REACT_APP_
     key_secret: process.env.REACT_APP_SECRET_KEY,
@@ -120,29 +126,29 @@ const showRazorpay = async(event) => {
   var rzp1 = new window.Razorpay(options);
   rzp1.open();
 };
-   
+}
   return (
-    <section id="checkout" className="container">
-      
+    <section id="checkout" className="wrapper">
+      <Helmet><title>Ecommerce App| Checkout</title></Helmet>
       <form id="checkout-form">
         <div className="left">
           <h2>Enter Delivery Details</h2>
           <br />
           <div>
             <label htmlFor="name">Name</label>
-            <input className="form-control" type="text" id="name" name="name" value={name}
+            <input className="form-control" type="text" id="name" name="name" value={name?name:""}
             onChange={(e) => setName(e.target.value)} required /><br/>
 
             <label htmlFor="address">Address</label>
-            <textarea className="form-control" type="text" id="address" name="address" value={address}
+            <textarea className="form-control" type="text" id="address" name="address" value={address?address:""}
             onChange={(e) => setAddress(e.target.value)} rows='5' required /><br/>
 
             <label htmlFor="pincode">Pincode</label>
-            <input className="form-control" type="number" id="pincode" name="pincode" value={pincode}
+            <input className="form-control" type="number" id="pincode" name="pincode" value={pincode?pincode:""}
             onChange={(e) => setPincode(e.target.value)} required /><br/>
 
             <label htmlFor="mobile">Mobile</label>
-            <input className="form-control" type="number" id="mobile" name="mobile" value={mobile}
+            <input className="form-control" type="number" id="mobile" name="mobile" value={mobile?mobile:""}
             onChange={(e) => setMobile(e.target.value)} required />
 
             <input type="text" name="userId" id="" defaultValue={user.user_id}  hidden/>
@@ -154,9 +160,10 @@ const showRazorpay = async(event) => {
             <h4>Total Amount : <i className="fa fa-inr pr-2"></i>&#x20B9; {totalAmount}</h4>
             <hr />
              
-            <button onClick={showRazorpay} className="btn btn-primary btn-block">
+            <button type="submit" onClick={showRazorpay} className="btn btn-primary btn-block">
               Pay with razorpay
-            </button>  
+            </button>
+            <span style={{color:"red"}}>{errMessage && errMessage}</span>
         </div>
       </form>
     </section>

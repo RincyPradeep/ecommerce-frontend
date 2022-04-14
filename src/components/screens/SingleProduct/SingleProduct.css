@@ -70,3 +70,44 @@
     background-color: rgb(3 69 171);
     color:#fff;
 }
+
+
+@media all and (max-width:980px){
+    #single-product{
+        flex-wrap: wrap;
+    }
+    #single-product div.left{
+        width: 100%;
+        margin-bottom: 50px;
+        text-align: center;
+    }
+    #single-product div.right{
+        width: 100%;
+        text-align: center;
+    }
+    #single-product div.left img{
+        width: 70%;
+    }
+    #single-product div.right div.details{
+        margin-left: auto;
+        margin-right: auto;
+    }
+    #single-product div.right button{
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+@media all and (max-width:640px){
+    #single-product div.right h2 {
+        font-size: 26px;
+    }
+}
+
+@media all and (max-width:480px){
+    #single-product div.right h2 {
+        font-size: 20px;
+    }
+    #single-product div.right p {
+        font-size: 14px;
+    }
+}

@@ -2,14 +2,17 @@ import React,{useContext, useEffect} from 'react'
 
 import axios from 'axios'
 import sweetalert from 'sweetalert'
+import {Helmet} from 'react-helmet'
 
 import './Profile.css'
 import AuthContext from '../../../context/AuthContext';
+import ProductContext from "../../../context/ProductContext";
 
 
 const Profile = () => {
 
   const {authTokens,user,getProfile,name,address,pincode,mobile,setName,setAddress,setPincode,setMobile} = useContext(AuthContext)
+  let {getCart} = useContext(ProductContext)
 
   let userid = user.user_id
   
@@ -30,10 +33,12 @@ const Profile = () => {
 
   useEffect(()=>{
     getProfile(userid)
+    getCart(userid)
   },[])
 
   return (
-    <section id="profile" className="container">
+    <section id="profile" className="wrapper">
+      <Helmet><title>Ecommerce App| Profile</title></Helmet>
         <form className="content" onSubmit={updateProfile} >
             <h1>Profile</h1>
                 <label htmlFor='name'>Name</label>

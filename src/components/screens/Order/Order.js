@@ -1,41 +1,79 @@
-import React from 'react'
+import React, {useState, useEffect, useContext } from 'react'
+import { Link ,useParams} from "react-router-dom";
+
+import axios from 'axios'
+import {Helmet} from 'react-helmet'
+
 import './Order.css'
+import AuthContext from '../../../context/AuthContext';
+import ProductContext from "../../../context/ProductContext";
+
 
 const Order = () => {
+
+    const { id } = useParams()
+    const {authTokens} = useContext(AuthContext)
+    let {getCart} = useContext(ProductContext)
+
+    const [orders,setOrders] = useState([])
+    const [message,setMessage] = useState(null)
+
+    const getOrders = async() =>{
+        await axios.get(`http://localhost:8000/api/v1/products/orders/${id}`,{
+            headers : {
+              'Authorization':'Bearer ' + String(authTokens.access)
+            },           
+        }).then((response)=>{
+            if (response.data.status_code === 6000)
+                setOrders(response.data.data)
+            else
+                setMessage(response.data.message)         
+        }).catch(err=>{
+          alert(err)
+      })
+      }
+
+    useEffect(()=>{
+        getOrders(id)
+        getCart(id)
+      },[])
+
   return (
-    <section id="order" className="container">
-        {/* <h3 className="text-center center">Order List is Empty</h3> */}
+    <section id="order" className="wrapper">
+        <Helmet><title>Ecommerce App| Orders</title></Helmet>
+        {message ?<h3 className="text-center center">{message}</h3>:
+        <>
         <h3 className="text-center center">Order List</h3>
-        <table className="table table-bordered table-hover table-responsive" >
+        <table id="orders" className="table table-bordered table-hover table-responsive" >
             <thead>
                 <tr>
-                    <th scope="col">Date</th>
-                    <th>Address</th>
-                    <th>Pincode</th>
-                    <th>Mobile</th>
+                    <th scope="col">order id</th>
+                    <th>Date</th>
+                    <th>Product</th>
+                    <th>Quantity</th>
                     <th scope="col">Amount</th>
-                    <th scope="col">Payment</th>
                     <th>Status</th>
-                    <th></th>
                 </tr>
             </thead>
-            <tbody>
-                
-                <tr>
-                    <td>5.3.22</td>
-                    <td>sdasd dffdsf dfdsf dsfsdf </td>
-                    <td>683456</td>
-                    <td>9876543235</td>
-                    <td><i className="fa fa-inr pr-2"></i>$499</td>
-                    <td>Online</td>
-                    <td>ordered</td>
-                    {/* <td>
-                        <a href="/view-order-products/{{this._id}}" className="btn order-btn" style="width:128px">View Products</a>
-                    </td>                     */}
-                </tr>
-                
+            <tbody> 
+                {orders.map((order,index)=>{
+                    return(
+                        <tr key={order.id}>
+                            <td>{order.order_payment_id}</td>
+                            <td className='date'>{order.order_date}</td>
+                            <td><Link to={`/product/${order.product_id}`}>{order.product_title}</Link></td>
+                            <td>{order.quantity}</td>
+                            <td><i className="fa fa-inr pr-2"></i>{order.product_amount}</td>
+                            <td>{order.status==="Pending"?<span style={{"color":"red"}}>{order.status}</span>:
+                                <span style={{"color":"green"}}>{order.status}</span>}
+                            </td>
+                        </tr> 
+                    )
+                })}                           
             </tbody>
         </table>
+        </>
+        }
 </section>
   )
 }

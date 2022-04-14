@@ -20,7 +20,7 @@ import Profile from './components/screens/Profile/Profile';
 
 function App() { 
   return (
-    <div>
+    <>
       <Router>
         <AuthProvider>
         <CartProvider>
@@ -40,7 +40,7 @@ function App() {
         </CartProvider>
         </AuthProvider>
       </Router>
-    </div>
+    </>
   );
 }
 

@@ -1,9 +1,10 @@
-import React, { useEffect, useContext } from "react";
+import React, { useState,useEffect, useContext } from "react";
 import { Link ,useParams,useNavigate} from "react-router-dom";
 
 import axios from 'axios'
 import toast from 'react-hot-toast';
 import CloseIcon from "@material-ui/icons/Close";
+import {Helmet} from 'react-helmet'
 
 import "./Cart.css";
 import AuthContext from '../../../context/AuthContext';
@@ -12,6 +13,8 @@ import ProductContext from "../../../context/ProductContext";
 const Cart = () => {
   let sub_total = 0
   let total = 0
+
+  const[toggleCartCount,setToggleCartCount] = useState(false)
   
   const navigate = useNavigate();
   const { id } = useParams()
@@ -22,7 +25,7 @@ const Cart = () => {
     price = parseFloat(price)
     sub_total = quantity * price
     total = total + sub_total 
-    return(total)    
+    // return(total)    
   }
 
   const removeFromCart = (cart_id)=>{
@@ -33,6 +36,7 @@ const Cart = () => {
             'Authorization':'Bearer ' + String(authTokens.access)
           },           
       }).then(response=>{
+        setToggleCartCount(!toggleCartCount)
         toast.success("Item Deleted",{duration: 2000,style: {
           border: '1px solid green',
           padding: '8px',
@@ -51,6 +55,7 @@ const Cart = () => {
                 'Authorization':'Bearer ' + String(authTokens.access)
             },           
         }).then(response=>{
+          setToggleCartCount(!toggleCartCount)
            findTotal(quantity,price)
         }).catch(error=>{
           alert(error)
@@ -65,10 +70,11 @@ const Cart = () => {
   useEffect(()=>{
     getCart(id)
     getProducts()   
-  },[])
+  },[toggleCartCount])
 
   return (
-    <section id="cart" className="container">
+    <section id="cart" className="wrapper">
+      <Helmet><title>Ecommerce App| Cart</title></Helmet>
       {emptyCart ?
       <div className="empty">
       <h3>{emptyCart}</h3>
@@ -86,10 +92,12 @@ const Cart = () => {
             if(item){   
               return (
                 <li className="cart-item" key={cart.id}>
-                  <Link to={`/product/${item.id}`}><img src={item.image} alt={item.title} /></Link>
-                  <h5>
+                  <Link to={`/product/${item.id}`}>
+                    <img src={item.image} alt={item.title} />
+                    <h5>
                     {item.title}
                   </h5>
+                  </Link> 
                   <div className="quantity">
                     <p>QUANTITY</p>
                     <select name="quantity" id="quantity" defaultValue={cart.quantity} 
@@ -105,12 +113,13 @@ const Cart = () => {
                     <p>PRICE</p>
                     <p>&#x20B9;{item.price}</p>
                   </div>
-                  <div className="price">
+                  <div className="price subtotal">
                     <p>SUBTOTAL</p>                  
                     <p>&#x20B9; {cart.quantity * parseFloat(item.price)}</p>                    
                   </div>
 
-                  <p hidden>{total = total +(cart.quantity * parseFloat(item.price))}</p>      
+                   {findTotal(cart.quantity,item.price)}
+                  {/* <p hidden>{total = total +(cart.quantity * parseFloat(item.price))}</p>       */}
                   
                   <div className="close-btn">
                     <CloseIcon onClick={()=>removeFromCart(cart.id)} />

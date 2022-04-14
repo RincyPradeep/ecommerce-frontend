@@ -24,29 +24,30 @@ export const CartProvider = ({children})=>{
           alert(err)
       })
       }
-    
-      let getCart = async(id) =>{
-        let response = await fetch(`http://localhost:8000/api/v1/products/cart/${id}`, {
-            method:'GET',
-            headers:{
-                'Content-Type':'application/json',
-                'Authorization':'Bearer ' + String(authTokens.access)
-            }
-        })
-        let data = await response.json()
-        
-        if(response.status === 200){
-          if(data.status_code === 6000){
-            setCarts(data.data)
-            setEmptyCart(null)
-            setCartLength(carts.length)
-          } else if(data.status_code === 6001){
-            setEmptyCart(data.message)
+
+      const getCart = (id) =>{
+        axios.get(`http://localhost:8000/api/v1/products/cart/${id}`,
+        {
+          headers:{
+          'Content-Type':'application/json',
+          'Authorization':'Bearer ' + String(authTokens.access)
           }
-        }else{
-          alert("Something went wrong!")
-        }   
-    }
+        }).then((response)=>{
+            if(response.status === 200){
+              if(response.data.status_code === 6000){
+                setCarts(response.data.data)
+                setEmptyCart(null)
+                setCartLength(carts.length)
+              } else if(response.data.status_code === 6001){
+                setEmptyCart(response.data.message)
+              }
+            }else{
+              alert("Something went wrong!")
+            }   
+        }).catch((error)=>{
+          alert(error)
+        })
+      }  
 
     let contextData = {
         carts : carts,

@@ -30,14 +30,14 @@ const Header = () => {
   })
   }
 
-  useEffect(()=>{
-    if(user){
-      getCart(user.user_id)
-    }
-  },[carts,user])
+  // useEffect(()=>{
+  //   if(user){
+  //     getCart(user.user_id)
+  //   }
+  // },[])
 
   return (
-    <section id="header" className="container">
+    <section id="header" className="wrapper">
       <div className="nav-left">
         <h1>
           <Link to="/">
@@ -67,14 +67,14 @@ const Header = () => {
             <>
               <li>
                 <DropdownButton id="dropdown-basic-button" title={user.username}>
-                  <Dropdown.Item href="/profile">Profile</Dropdown.Item>
-                  <Dropdown.Item href={`/orders/${user.user_id}`}>Orders</Dropdown.Item>
+                  <Dropdown.Item as={Link} to="/profile">Profile</Dropdown.Item>
+                  <Dropdown.Item as={Link} to={`/orders/${user.user_id}`}>Orders</Dropdown.Item>
                 </DropdownButton>
               </li>
               <li>
                 <Link to={`/cart/${user.user_id}`}>
                   <ShoppingCartIcon/>                  
-                    <span id="cart-count">{emptyCart? 0 : cartLength}</span>
+                    <span id="cart-count">{emptyCart? 0 : carts.length}</span>
                 </Link>
               </li>
               <li onClick={logoutUser} className="logout-btn">Logout</li>
