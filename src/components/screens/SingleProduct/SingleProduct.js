@@ -1,9 +1,8 @@
 import React,{useState,useEffect,useContext} from 'react'
-import {useParams,useNavigate} from 'react-router-dom';
+import {useParams,useNavigate, Link} from 'react-router-dom';
 
 import axios from 'axios'
 import sweetalert from 'sweetalert'
-import {Helmet} from 'react-helmet'
 
 import './SingleProduct.css'
 import AuthContext from '../../../context/AuthContext';
@@ -42,8 +41,33 @@ const SingleProduct = () => {
     }
   }
    
+  const addToWishlist = async( product_id,quantity)=>{
+    if(user){
+      let user_id=user.user_id
+      let response = await fetch("http://localhost:8000/api/v1/products/addtowishlist/",{
+            method : "POST",
+            headers : {
+                'Content-Type' : 'application/json',
+                'Authorization':'Bearer ' + String(authTokens.access)
+            },
+            body : JSON.stringify({"user_id" : user_id, "product_id":product_id})
+        })
+        
+        if(response.status === 200){
+          response = await response.json()
+          let message=response.message
+          sweetalert("Good",message,"success")
+        }else if(response.statusText === 'Unauthorized'){
+          sweetalert("Oops","Please Login Again","error")
+          logoutUser()
+    }  
+    }else{
+      navigate('/login')
+    }
+  }
+
   const getProduct = () => {
-  axios.get(`http://localhost:8000/api/v1/products/singleproduct/${id}`).then(response=>{
+  axios.get(`http://localhost:8000/api/v1/products/singleproduct/${id}/`).then(response=>{
     if(response.data.status_code === 6000){
       setProduct(response.data.data);
     }else if(response.data.status_code === 6001){
@@ -61,7 +85,6 @@ const SingleProduct = () => {
 
   return (
     <section id="single-product" className='wrapper'>
-      <Helmet><title>Ecommerce App| Product</title></Helmet>
       {product && <>
         <div className='left'>
             <img src={product.image} alt="product" />
@@ -92,8 +115,9 @@ const SingleProduct = () => {
               }            
             </div>
             { product.is_available &&
-              <button onClick={()=>addToCart( product.id,quantity)}>Add to Cart</button>
+              <button onClick={()=>addToCart( product.id,quantity)} className="addtocart">Add to Cart</button>
             }
+            <button onClick={()=>addToWishlist( product.id,quantity)} className='wishlist'>ADD TO WISHLIST</button>
         </div>
         </>
       }

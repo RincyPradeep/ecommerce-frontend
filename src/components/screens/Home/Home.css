@@ -2,7 +2,7 @@
     padding: 50px 0;
 }
 #home nav.menu{
-    margin-bottom: 50px;
+    margin-bottom: 30px;
 }
 #home nav.menu ul{
     display: flex;
@@ -11,12 +11,27 @@
 #home nav.menu ul li{
     margin-right: 20px;
     cursor:pointer;
+    font-weight: 600;
 }
 #home nav.menu ul li.active{
     border-bottom: 2px solid rgb(3 69 171);
 }
-#home div.products{
+#home div.banner{
+    margin-bottom: 50px;
+    margin-left:auto;
+    margin-right: auto;
+    width:100%;
 
+}
+#home div.banner img{
+    margin:0 auto;
+}
+/* #home div.banner .slick-prev,#home div.banner .slick-next{
+    color:#fff;
+    background-color: #000;
+} */
+#home div.products{
+   
 }
 #home div.products ul{
     display: flex;
@@ -34,9 +49,7 @@
     box-shadow: 1px 8px 20px grey;
     transition:  box-shadow .2s ease-in;
 }
-/* #home div.products ul li:nth-child(4n){
-    margin-right: 0;
-} */
+
 
 @media all and (max-width:768px){
     #header div.nav-middle {

@@ -103,7 +103,7 @@ export const AuthProvider = ({children})=>{
 
 
     const getProfile = (userid) =>{
-        axios.get(`http://localhost:8000/api/v1/auth/get_profile/${userid}`,
+        axios.get(`http://localhost:8000/api/v1/auth/get_profile/${userid}/`,
         {
          headers : {
            'Authorization':'Bearer ' + String(authTokens.access)

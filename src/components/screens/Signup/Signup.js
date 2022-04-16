@@ -1,8 +1,6 @@
 import React,{useContext} from 'react'
 import {Link} from 'react-router-dom';
 
-import {Helmet} from 'react-helmet'
-
 import './Signup.css'
 import AuthContext from '../../../context/AuthContext';
 
@@ -11,7 +9,6 @@ const Signup = () => {
 
   return (
     <section id="signup" className="wrapper">
-      <Helmet><title>Ecommerce App| Signup</title></Helmet>
         <form className="content" onSubmit={createUser} >
             <h1>Signup</h1>           
                 <label htmlFor='first_name'>First Name</label>

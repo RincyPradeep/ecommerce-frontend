@@ -3,7 +3,6 @@ import {useNavigate} from "react-router-dom";
 
 import sweetalert from 'sweetalert'
 import Axios from "axios";
-import {Helmet} from 'react-helmet'
 
 import "./Checkout.css";
 import AuthContext from '../../../context/AuthContext';
@@ -82,7 +81,6 @@ const showRazorpay = async(event) => {
       "amount":amount,"pincode":pincode,"mobile":mobile,"name":name,"userId":userId,"address":address,"carts":carts
     }
   }).then((res) => {
-    console.log("RESPONSE:-------",res.data.status_code)
     return res;
   }).catch(error=>{
         alert(error)
@@ -129,7 +127,6 @@ const showRazorpay = async(event) => {
 }
   return (
     <section id="checkout" className="wrapper">
-      <Helmet><title>Ecommerce App| Checkout</title></Helmet>
       <form id="checkout-form">
         <div className="left">
           <h2>Enter Delivery Details</h2>
@@ -163,7 +160,7 @@ const showRazorpay = async(event) => {
             <button type="submit" onClick={showRazorpay} className="btn btn-primary btn-block">
               Pay with razorpay
             </button>
-            <span style={{color:"red"}}>{errMessage && errMessage}</span>
+            <p style={{color:"red"}}>{errMessage && errMessage}</p>
         </div>
       </form>
     </section>

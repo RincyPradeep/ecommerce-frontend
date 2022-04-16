@@ -30,12 +30,6 @@ const Header = () => {
   })
   }
 
-  // useEffect(()=>{
-  //   if(user){
-  //     getCart(user.user_id)
-  //   }
-  // },[])
-
   return (
     <section id="header" className="wrapper">
       <div className="nav-left">
@@ -69,6 +63,7 @@ const Header = () => {
                 <DropdownButton id="dropdown-basic-button" title={user.username}>
                   <Dropdown.Item as={Link} to="/profile">Profile</Dropdown.Item>
                   <Dropdown.Item as={Link} to={`/orders/${user.user_id}`}>Orders</Dropdown.Item>
+                  <Dropdown.Item as={Link} to={`/wishlist/${user.user_id}`}>Wish List</Dropdown.Item>
                 </DropdownButton>
               </li>
               <li>

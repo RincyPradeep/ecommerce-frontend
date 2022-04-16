@@ -4,11 +4,11 @@ import { Link ,useParams,useNavigate} from "react-router-dom";
 import axios from 'axios'
 import toast from 'react-hot-toast';
 import CloseIcon from "@material-ui/icons/Close";
-import {Helmet} from 'react-helmet'
 
 import "./Cart.css";
 import AuthContext from '../../../context/AuthContext';
 import ProductContext from "../../../context/ProductContext";
+
 
 const Cart = () => {
   let sub_total = 0
@@ -24,8 +24,7 @@ const Cart = () => {
   const findTotal = (quantity,price)=>{ 
     price = parseFloat(price)
     sub_total = quantity * price
-    total = total + sub_total 
-    // return(total)    
+    total = total + sub_total    
   }
 
   const removeFromCart = (cart_id)=>{
@@ -74,9 +73,9 @@ const Cart = () => {
 
   return (
     <section id="cart" className="wrapper">
-      <Helmet><title>Ecommerce App| Cart</title></Helmet>
       {emptyCart ?
       <div className="empty">
+        
       <h3>{emptyCart}</h3>
       <Link to="/" className="shopping">
           CONTINUE SHOPPING
@@ -119,7 +118,6 @@ const Cart = () => {
                   </div>
 
                    {findTotal(cart.quantity,item.price)}
-                  {/* <p hidden>{total = total +(cart.quantity * parseFloat(item.price))}</p>       */}
                   
                   <div className="close-btn">
                     <CloseIcon onClick={()=>removeFromCart(cart.id)} />
@@ -147,6 +145,7 @@ const Cart = () => {
         </div>
       </>      
     }
+    
     </section>
   );
 };

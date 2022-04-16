@@ -2,7 +2,6 @@ import React,{useContext, useEffect} from 'react'
 
 import axios from 'axios'
 import sweetalert from 'sweetalert'
-import {Helmet} from 'react-helmet'
 
 import './Profile.css'
 import AuthContext from '../../../context/AuthContext';
@@ -38,24 +37,23 @@ const Profile = () => {
 
   return (
     <section id="profile" className="wrapper">
-      <Helmet><title>Ecommerce App| Profile</title></Helmet>
         <form className="content" onSubmit={updateProfile} >
             <h1>Profile</h1>
                 <label htmlFor='name'>Name</label>
                 <input type="text" name='name' id='name' value={name}
-                  onChange={(e)=>setName(e.target.value)}/>
+                  onChange={(e)=>setName(e.target.value)} required/>
 
                 <label htmlFor='address'>Address</label>
                 <textarea type="text" rows='3' name='address' id='address' value={address}
-                  onChange={(e)=>setAddress(e.target.value)}/>
+                  onChange={(e)=>setAddress(e.target.value)} required/>
 
                 <label htmlFor='pincode'>Pincode</label>
                 <input type="text" id='pincode' value={pincode}
-                  onChange={(e)=>setPincode(e.target.value)}/>
+                  onChange={(e)=>setPincode(e.target.value)} required/>
 
                 <label htmlFor='mobile'>Mobile</label>
                 <input type="text" name='mobile' id='mobile' value={mobile}
-                  onChange={(e)=>setMobile(e.target.value)}/>
+                  onChange={(e)=>setMobile(e.target.value)} required/>
 
                 <input type="text" name='user' defaultValue={userid} hidden />
                    

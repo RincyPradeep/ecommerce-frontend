@@ -2,11 +2,11 @@ import React, {useState, useEffect, useContext } from 'react'
 import { Link ,useParams} from "react-router-dom";
 
 import axios from 'axios'
-import {Helmet} from 'react-helmet'
 
 import './Order.css'
 import AuthContext from '../../../context/AuthContext';
 import ProductContext from "../../../context/ProductContext";
+import Pagination from '../Pagination/Pagination';
 
 
 const Order = () => {
@@ -17,9 +17,11 @@ const Order = () => {
 
     const [orders,setOrders] = useState([])
     const [message,setMessage] = useState(null)
+    const [currentPage,setCurrentPage] = useState(1)
+    const [productsPerPage,setProductsPerPage] = useState(10)
 
     const getOrders = async() =>{
-        await axios.get(`http://localhost:8000/api/v1/products/orders/${id}`,{
+        await axios.get(`http://localhost:8000/api/v1/products/orders/${id}/`,{
             headers : {
               'Authorization':'Bearer ' + String(authTokens.access)
             },           
@@ -38,9 +40,16 @@ const Order = () => {
         getCart(id)
       },[])
 
+      // get current posts
+  const indexOfLastProduct = currentPage * productsPerPage
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage
+  const currentProducts = orders.slice(indexOfFirstProduct, indexOfLastProduct)
+
+  // change page
+  const paginate = (pageNumber)=>setCurrentPage(pageNumber)
+
   return (
     <section id="order" className="wrapper">
-        <Helmet><title>Ecommerce App| Orders</title></Helmet>
         {message ?<h3 className="text-center center">{message}</h3>:
         <>
         <h3 className="text-center center">Order List</h3>
@@ -56,7 +65,7 @@ const Order = () => {
                 </tr>
             </thead>
             <tbody> 
-                {orders.map((order,index)=>{
+                {currentProducts.map((order,index)=>{
                     return(
                         <tr key={order.id}>
                             <td>{order.order_payment_id}</td>
@@ -72,6 +81,8 @@ const Order = () => {
                 })}                           
             </tbody>
         </table>
+        
+        <Pagination productsPerPage={productsPerPage} totalProducts={orders.length} paginate={paginate} />
         </>
         }
 </section>

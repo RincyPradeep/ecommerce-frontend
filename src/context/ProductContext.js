@@ -26,7 +26,7 @@ export const CartProvider = ({children})=>{
       }
 
       const getCart = (id) =>{
-        axios.get(`http://localhost:8000/api/v1/products/cart/${id}`,
+        axios.get(`http://localhost:8000/api/v1/products/cart/${id}/`,
         {
           headers:{
           'Content-Type':'application/json',
